@@ -16,8 +16,9 @@ namespace Contract_Monthly_Claim_System
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
-        {
+        {         
             InitializeComponent();
         }
 

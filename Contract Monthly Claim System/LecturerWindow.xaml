@@ -17,7 +17,6 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <!-- Title Bar -->
         <Grid Background="Crimson" Grid.Row="0" MouseDown="TopBar_MouseDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -39,7 +38,6 @@
                     Style="{StaticResource TitleBarButtonStyle}"/>
         </Grid>
 
-        <!-- Main Content -->
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="40,40,40,0">
             <TextBlock Text="Welcome Lecturer, please submit your monthly claim and supporting documents."
                        FontSize="18" FontWeight="Bold" Foreground="#333"
