@@ -34,5 +34,23 @@ namespace Contract_Monthly_Claim_System
         {
             Close();
         }
+        private void Lecturer_Click(object sender, RoutedEventArgs e)
+        {
+            LecturerWindow lecturerWindow = new LecturerWindow();
+            lecturerWindow.Show();
+            this.Hide();
+        }
+
+        private void Coordinator_Click(object sender, RoutedEventArgs e)
+        {
+            CoordinatorWindow coordinatorWindow = new CoordinatorWindow();
+            coordinatorWindow.Show();
+            this.Hide();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
