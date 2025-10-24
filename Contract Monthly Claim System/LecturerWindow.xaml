@@ -7,10 +7,6 @@
         ResizeMode="NoResize"
         Background="#FFF9F9F9">
 
-    <Window.Resources>
-        <ResourceDictionary Source="Themes/SharedStyles.xaml"/>
-    </Window.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
@@ -31,12 +27,10 @@
 
             <Button Grid.Column="1" Content="—" Width="35" Height="25"
                     Foreground="White" FontSize="14"
-                    Click="Minimize_Click"
-                    Style="{StaticResource TitleBarButtonStyle}"/>
+                    Click="Minimize_Click"/>
             <Button Grid.Column="2" Content="✕" Width="35" Height="25"
                     Foreground="White" FontSize="14"
-                    Click="Close_Click"
-                    Style="{StaticResource TitleBarButtonStyle}"/>
+                    Click="Close_Click"/>
         </Grid>
 
         <!-- Main Content -->
@@ -48,12 +42,10 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                 <Button Content="Submit Claim"
                         Width="200" Height="50"
-                        Background="Crimson" Foreground="White"
-                        Style="{StaticResource RoundedButtonStyle}" Margin="0,0,0,15"/>
+                        Background="Crimson" Foreground="White" Margin="0,0,0,15"/>
                 <Button Content="Upload Supporting Documents"
                         Width="200" Height="50"
-                        Background="Crimson" Foreground="White"
-                        Style="{StaticResource RoundedButtonStyle}"/>
+                        Background="Crimson" Foreground="White"/>
             </StackPanel>
         </StackPanel>
     </Grid>

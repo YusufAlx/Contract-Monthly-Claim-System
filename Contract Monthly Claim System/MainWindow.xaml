@@ -7,45 +7,6 @@
         ResizeMode="NoResize"
         Background="#FFF9F9F9">
 
-    <Window.Resources>
-        <Style x:Key="RoundedButtonStyle" TargetType="Button">
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                                Background="{TemplateBinding Background}" 
-                                CornerRadius="20"
-                                SnapsToDevicePixels="True">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              RecognizesAccessKey="True"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#B22222"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="TitleBarButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#B22222"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
@@ -71,16 +32,14 @@
                     Foreground="White"
                     FontSize="14"
                     FontWeight="Bold"
-                    Click="Minimize_Click"
-                    Style="{StaticResource TitleBarButtonStyle}"/>
+                    Click="Minimize_Click"/>
 
             <Button Grid.Column="2" Content="✕"
                     Width="35" Height="25"
                     Foreground="White"
                     FontSize="14"
                     FontWeight="Bold"
-                    Click="Close_Click"
-                    Style="{StaticResource TitleBarButtonStyle}"/>
+                    Click="Close_Click"/>
         </Grid>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="40,40,40,0">
@@ -105,17 +64,15 @@
                         Width="160" Height="50"
                         Click="Lecturer_Click"
                         Background="Crimson" Foreground="White"
-                        Style="{StaticResource RoundedButtonStyle}"
                         Margin="0,0,20,0"/>
                 <Button Content="Programme Coordinator"
                         Width="160" Height="50"
                         Background="Crimson" Foreground="White"
-                        Style="{StaticResource RoundedButtonStyle}"
+                        Click="CoordinatorButton_Click"
                         Margin="0,0,20,0"/>
                 <Button Content="Track Claims"
                         Width="160" Height="50"
-                        Background="Crimson" Foreground="White"
-                        Style="{StaticResource RoundedButtonStyle}" Click="Button_Click_1"/>
+                        Background="Crimson" Foreground="White" Click="Button_Click_1"/>
             </StackPanel>
         </StackPanel>
     </Grid>
