@@ -1,44 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Contract_Monthly_Claim_System.Data;
+using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Contract_Monthly_Claim_System
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
     public partial class CoordinatorWindow : Window
     {
         public CoordinatorWindow()
         {
             InitializeComponent();
+            LoadClaims();
         }
-    
 
-        private void TopBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void LoadClaims()
         {
-            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+            var claims = DatabaseHelper.GetAllClaims();
+            dgClaims.ItemsSource = claims;
+        }
+
+        private void ViewDocs_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Button b && b.Tag is int claimId)
             {
-                this.DragMove();
+                var docs = DatabaseHelper.GetDocumentsByClaimId(claimId);
+                if (docs == null || docs.Count == 0)
+                {
+                    MessageBox.Show("No documents attached to this claim.", "No Documents", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                var dlg = new System.Text.StringBuilder();
+                for (int i = 0; i < docs.Count; i++)
+                {
+                    dlg.AppendLine($"{i + 1}. {docs[i].FileName}");
+                }
+                var selected = Microsoft.VisualBasic.Interaction.InputBox($"Documents:\n{dlg}\nEnter number to open, or Cancel.", "Open Document", "1");
+                if (int.TryParse(selected, out int idx) && idx >= 1 && idx <= docs.Count)
+                {
+                    var path = docs[idx - 1].FilePath;
+                    if (File.Exists(path))
+                    {
+                        try
+                        {
+                            Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Unable to open file: {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("File not found on disk.", "Missing File", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
             }
         }
-        private void Minimize_Click(object sender, RoutedEventArgs e)
+
+        private void Approve_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            if (sender is System.Windows.Controls.Button b && b.Tag is int claimId)
+            {
+                DatabaseHelper.UpdateClaimStatus(claimId, "Approved");
+                LoadClaims();
+            }
         }
-        private void Close_Click(object sender, RoutedEventArgs e)
+
+        private void Reject_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            if (sender is System.Windows.Controls.Button b && b.Tag is int claimId)
+            {
+                DatabaseHelper.UpdateClaimStatus(claimId, "Rejected");
+                LoadClaims();
+            }
         }
     }
 }
