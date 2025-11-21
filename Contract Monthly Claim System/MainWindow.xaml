@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Contract_Monthly_Claim_System.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Contract Monthly Claim System"
+        Title="Main Menu"
         Height="450" Width="600"
         Background="{StaticResource AppBackground}"
         WindowStartupLocation="CenterScreen">
@@ -12,7 +12,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        
         <TextBlock Text="Contract Monthly Claim System"
                    HorizontalAlignment="Center"
                    FontSize="26"
@@ -20,28 +19,34 @@
                    Foreground="Black"
                    Margin="0,20,0,40"/>
 
-        
         <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button Content="Lecturer Submission"
                     Width="250" Height="60"
                     Style="{StaticResource CrimsonButton}"
                     FontSize="18"
-                    Click="Lecturer_Click"
-                    Margin="0,8,0,8"/>
+                    Margin="0,8"
+                    Click="Lecturer_Click"/>
 
             <Button Content="Coordinator Review"
                     Width="250" Height="60"
                     Style="{StaticResource CrimsonButton}"
                     FontSize="18"
-                    Click="Coordinator_Click"
-                    Margin="0,8,0,8"/>
+                    Margin="0,8"
+                    Click="Coordinator_Click"/>
 
             <Button Content="Track Claim"
                     Width="250" Height="60"
                     Style="{StaticResource CrimsonButton}"
                     FontSize="18"
-                    Click="Track_Click"
-                    Margin="0,8,0,8"/>
+                    Margin="0,8"
+                    Click="Track_Click"/>
+
+            <Button Content="HR Dashboard"
+                    Width="250" Height="60"
+                    Style="{StaticResource CrimsonButton}"
+                    FontSize="18"
+                    Margin="0,8"
+                    Click="HR_Click"/>
         </StackPanel>
     </Grid>
 </Window>

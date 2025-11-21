@@ -24,5 +24,10 @@ namespace Contract_Monthly_Claim_System
         {
             new TrackClaimsWindow().ShowDialog();
         }
+
+        private void HR_Click(object sender, RoutedEventArgs e)
+        {
+            new HRWindow().ShowDialog();
+        }
     }
 }

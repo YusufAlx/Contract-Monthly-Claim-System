@@ -10,6 +10,6 @@ namespace Contract_Monthly_Claim_System.Data
         public double HourlyRate { get; set; }
         public double HoursWorked { get; set; }
         public double MonthlyClaim { get; set; }
-        public string Status { get; set; } = "Pending";
+        public string Status { get; set; }
     }
 }

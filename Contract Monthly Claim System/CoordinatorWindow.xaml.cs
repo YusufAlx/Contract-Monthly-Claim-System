@@ -1,7 +1,8 @@
 ﻿using Contract_Monthly_Claim_System.Data;
+using Contract_Monthly_Claim_System.Services;
 using System;
 using System.Diagnostics;
-using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace Contract_Monthly_Claim_System
@@ -16,64 +17,52 @@ namespace Contract_Monthly_Claim_System
 
         private void LoadClaims()
         {
-            var claims = DatabaseHelper.GetAllClaims();
-            dgClaims.ItemsSource = claims;
+            dgClaims.ItemsSource = DatabaseHelper.GetAllClaims();
         }
 
         private void ViewDocs_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is System.Windows.Controls.Button b && b.Tag is int claimId)
-            {
-                var docs = DatabaseHelper.GetDocumentsByClaimId(claimId);
-                if (docs == null || docs.Count == 0)
-                {
-                    MessageBox.Show("No documents attached to this claim.", "No Documents", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
+            if (dgClaims.SelectedItem is not Claim claim) return;
 
-                var dlg = new System.Text.StringBuilder();
-                for (int i = 0; i < docs.Count; i++)
-                {
-                    dlg.AppendLine($"{i + 1}. {docs[i].FileName}");
-                }
-                var selected = Microsoft.VisualBasic.Interaction.InputBox($"Documents:\n{dlg}\nEnter number to open, or Cancel.", "Open Document", "1");
-                if (int.TryParse(selected, out int idx) && idx >= 1 && idx <= docs.Count)
-                {
-                    var path = docs[idx - 1].FilePath;
-                    if (File.Exists(path))
-                    {
-                        try
-                        {
-                            Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Unable to open file: {ex.Message}");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("File not found on disk.", "Missing File", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-                }
-            }
+            var docs = DatabaseHelper.GetDocumentsByClaimId(claim.Id);
+
+            foreach (var doc in docs)
+                Process.Start(new ProcessStartInfo(doc.FilePath) { UseShellExecute = true });
         }
 
-        private void Approve_Click(object sender, RoutedEventArgs e)
+        private void ApproveSelected_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is System.Windows.Controls.Button b && b.Tag is int claimId)
-            {
-                DatabaseHelper.UpdateClaimStatus(claimId, "Approved");
-                LoadClaims();
-            }
+            var selected = dgClaims.SelectedItems.Cast<Claim>().ToList();
+            if (!selected.Any()) return;
+
+            foreach (var claim in selected)
+                DatabaseHelper.ApproveClaimWithAudit(claim.Id, Environment.UserName, "Approved by Coordinator");
+
+            LoadClaims();
         }
 
-        private void Reject_Click(object sender, RoutedEventArgs e)
+        private void RejectSelected_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is System.Windows.Controls.Button b && b.Tag is int claimId)
+            var selected = dgClaims.SelectedItems.Cast<Claim>().ToList();
+            if (!selected.Any()) return;
+
+            foreach (var claim in selected)
+                DatabaseHelper.RejectClaimWithAudit(claim.Id, Environment.UserName, "Rejected by Coordinator");
+
+            LoadClaims();
+        }
+
+        private void GenerateInvoices_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = dgClaims.SelectedItems.Cast<Claim>()
+                          .Where(c => c.Status == "Approved").ToList();
+
+            if (!selected.Any()) return;
+
+            foreach (var claim in selected)
             {
-                DatabaseHelper.UpdateClaimStatus(claimId, "Rejected");
-                LoadClaims();
+                var path = InvoiceService.GenerateInvoicePdf(claim);
+                MessageBox.Show($"Invoice generated:\n{path}");
             }
         }
     }
